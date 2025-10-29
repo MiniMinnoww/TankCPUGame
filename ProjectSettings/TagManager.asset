@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Tank
+  - Water
+  - UI
+  - Obstacle
+  - Projectile
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Tilemap Details
+    uniqueID: 2955403103
+    locked: 0
+  - name: Player
+    uniqueID: 308184235
+    locked: 0
+  - name: Player Gun
+    uniqueID: 431550899
+    locked: 0
+  - name: Particles
+    uniqueID: 4283421451
+    locked: 0
+  m_RenderingLayers:
+  - Default
