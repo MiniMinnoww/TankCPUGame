@@ -8,6 +8,8 @@ They will then be able to implement methods and use provided helper methods (fro
 
 In game, players can select which CPUs to spawn into the match, and can optionally add a "Player" controlled player for testing too.
 
+Game Design Doc: [Google Doc Link](https://docs.google.com/document/d/1xcoRbonklk_kXdfvQmfVb2SIITTVZ0eMcYWmJpRE3aI/edit?usp=sharing)
+
 ## Current Roadmap
 - Finish the base game implementation
 - Create the CPUBrain and it's helper methods, preventing 'cheating' by only exposing certain methods & properties
