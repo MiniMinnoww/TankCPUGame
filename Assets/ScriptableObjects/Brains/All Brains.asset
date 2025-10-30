@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb8dcce5e4a9bc47aa1ac1c36a8abaa, type: 3}
+  m_Name: All Brains
+  m_EditorClassIdentifier: 
+  brains:
+  - brainName: Player
+    brain:
+      rid: 6286320982771892294
+  - brainName: Dumb CPU
+    brain:
+      rid: 6286320982771892295
+  references:
+    version: 2
+    RefIds:
+    - rid: 6286320982771892294
+      type: {class: InputBrain, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6286320982771892295
+      type: {class: DumbassBrain, ns: , asm: Assembly-CSharp}
+      data: 

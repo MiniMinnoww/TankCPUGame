@@ -5,8 +5,6 @@ using Unity.Cinemachine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    // Temporary
-    [SerializeField] private PlayerSetupInfo[] TEMP_playersToSetup;
 
     [SerializeField] private Player playerPrefab;
     [SerializeField] private Transform[] spawnPositions;
@@ -18,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()  
     {
-        SetupPlayers(TEMP_playersToSetup);
+        SetupPlayers(PlayerJoinMenu.NextGameData.playerInfos.ToArray());
         SetCameraTargets();
     }
 
@@ -47,11 +45,4 @@ public class GameManager : MonoBehaviour
         foreach (Player player in alivePlayers)
             targetGroup.AddMember(player.transform, 1, 1); 
     }
-}
-
-[Serializable]
-public struct PlayerSetupInfo 
-{
-    [SerializeReference, SubclassSelector] public Brain brain;
-    // TODO: Add things like colour, name, etc.
 }
