@@ -18,6 +18,7 @@ public abstract class BaseState
     private Coroutine endLagCoroutine;
 
     public virtual bool CanTransitionToThisState() => true;
+    public virtual bool ResetVelocityOnEnter() => true;
 
     public BaseState(Player player, Brain brain, float startLag=0, float endLag=0)
     {

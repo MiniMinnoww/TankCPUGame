@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Brain
 {
-    public Action onShoot;
+    public Action OnShootEvent;
     private float driveInput;
 
     public float DriveInput
@@ -22,5 +22,5 @@ public abstract class Brain
 
     public virtual void Update() { }
     
-    protected void Shoot() => onShoot?.Invoke();
+    protected void Shoot() => OnShootEvent?.Invoke();
 }

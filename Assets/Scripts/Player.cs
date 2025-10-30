@@ -4,7 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Rendering.Universal;
 
+public delegate void OnPlayerKilled(Player player);
 public class Player : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
@@ -16,9 +18,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] private TankHealthStats healthStats;
 
-    [SerializeField] private Hurtbox hurtbox;
+    [SerializeField] private PlayerHurtbox hurtbox;
 
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private ParticleSystem deathParticles;
+    [SerializeField] private Light2D deathLight;
 
     [Header("Lag Data")]
     [SerializeField] private Lag shootingLag;
@@ -29,6 +33,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D RB => rb;
     public BaseState CurrentState { get; private set; }
 
+    public event OnPlayerKilled OnPlayerKilledEvent;
+
     private Dictionary<string, BaseState> states = new();
 
 
@@ -37,6 +43,9 @@ public class Player : MonoBehaviour
     public void Setup()
     {
         health = new PlayerHealth(healthStats.maxHealth, healthSlider);
+        health.OnKillEvent += OnKilled;
+
+        deathLight.enabled = false;
 
         hurtbox.Setup(health);
 
@@ -45,8 +54,9 @@ public class Player : MonoBehaviour
 
     private void SetupStates()
     {
-        states.Add("movement", new MovementState(this, brain, movementStats));
+        states.Add("movement", new MovementState(this, brain, hurtbox, movementStats));
         states.Add("shooting", new ShootingState(this, brain, hurtbox, projectilePrefab, shootingLag.startLag, shootingLag.endLag));
+        states.Add("hitstun", new HitstunState(this, brain, 0.2f));
 
         SwitchState("movement");
     }
@@ -57,10 +67,25 @@ public class Player : MonoBehaviour
         CurrentState.Update();
     }
 
-    void FixedUpdate()
-    {
-        CurrentState.FixedUpdate();
+    void FixedUpdate() => CurrentState.FixedUpdate();
 
+    public void OnKilled(Health health)
+    {
+        PlayDeathParticles();
+        OnPlayerKilledEvent?.Invoke(this);
+    }
+
+    private void PlayDeathParticles()
+    {
+        if (deathParticles == null)
+        {
+            Debug.LogWarning("No death particles assigned");
+            return;
+        }
+
+        deathParticles.transform.parent = null;
+        deathLight.enabled = false;
+        deathParticles.Play();
     }
 
     public bool SetBrain(Brain newBrain)
@@ -72,8 +97,6 @@ public class Player : MonoBehaviour
         }
         return false;
     }
-
-
 
     public bool SwitchState(string newState)
     {
@@ -89,6 +112,8 @@ public class Player : MonoBehaviour
 
         CurrentState?.OnLeaveState();
         CurrentState = states[newState];
+
+        if (CurrentState.ResetVelocityOnEnter()) rb.linearVelocity = Vector2.zero;
         CurrentState.OnEnterState();
 
 
