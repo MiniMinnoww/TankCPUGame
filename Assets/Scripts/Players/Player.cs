@@ -7,6 +7,7 @@ using Hurtboxes;
 using Projectiles;
 using States;
 using States.PlayerStates;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace Players
         [SerializeField] private PlayerHurtbox hurtbox;
 
         [SerializeField] private Slider healthSlider;
+        [SerializeField] private TextMeshProUGUI playerNameText;
         [SerializeField] private ParticleSystem deathParticles;
         [SerializeField] private Light2D deathLight;
 
@@ -39,6 +41,17 @@ namespace Players
 
         public Rigidbody2D Rb => rb;
         private BaseState CurrentState { get; set; }
+
+        private string playerName;
+        public string PlayerName
+        {
+            get => playerName;
+            set
+            {
+                playerNameText.text = value;
+                playerName = value;
+            }
+        }
 
         public event OnPlayerKilled OnPlayerKilledEvent;
 

@@ -21,7 +21,7 @@ namespace Managers
 
         private void Awake() => Instance = this;
 
-        private void Start()  
+        private void Start()
         {
             SetupPlayers(PlayerJoinMenu.NextGameData.playerInfos.ToArray());
             SetCameraTargets();
@@ -33,6 +33,7 @@ namespace Managers
             {
                 Player newPlayer = Instantiate(playerPrefab, spawnPositions[i % spawnPositions.Length].position, spawnPositions[i % spawnPositions.Length].rotation);
                 Brain playerBrain = (Brain)Activator.CreateInstance(playersToSetup[i].brain.GetType(), (IPlayerBrainInterface) newPlayer);
+                newPlayer.PlayerName = playersToSetup[i].playerName;
                 
                 if (newPlayer.SetBrain(playerBrain))
                 {
@@ -68,7 +69,9 @@ namespace Managers
         private void CheckForWin()
         {
             if (alivePlayers.Count > 1) return;
-            SceneManager.LoadScene("PlayerJoinMenu");
+            
+            // Show win screen
+            WinMenu.Instance.OnWin(alivePlayers[0].PlayerName);
         }
     }
 }
