@@ -30,6 +30,8 @@ namespace Brains
             get => rotationInput;
             protected set => rotationInput = Mathf.Clamp(value, -1, 1);
         }
+        
+        public virtual void Start() { }
 
         public virtual void Update() { }
     

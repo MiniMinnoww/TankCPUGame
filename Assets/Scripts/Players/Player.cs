@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using Brains;
 using Healths;
 using Hurtboxes;
+using Managers;
 using Projectiles;
 using States;
 using States.PlayerStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Players
@@ -18,7 +20,8 @@ namespace Players
     public class Player : MonoBehaviour, IPlayerBrainInterface, IDetectableTank
     {
         [SerializeField] private Projectile projectilePrefab;
-        [SerializeField] private SpriteRenderer sprite;
+        [FormerlySerializedAs("sprite")] [SerializeField] private SpriteRenderer bodySprite;
+        [SerializeField] private SpriteRenderer turretSprite;
 
         [SerializeField] private Rigidbody2D rb;
 
@@ -43,6 +46,8 @@ namespace Players
 
         private Brain brain;
         private Health health;
+        
+        public int ColourIndex { get; private set; } // Stored so projectiles can use it
 
         public Rigidbody2D Rb => rb;
         private BaseState CurrentState { get; set; }
@@ -79,6 +84,16 @@ namespace Players
             hurtbox.Setup(health);
 
             SetupStates();
+            
+            brain.Start();
+        }
+
+        public void SetupSprites(int colourIndex)
+        {
+            ColourIndex = colourIndex;
+
+            bodySprite.sprite = Global.Sprites[colourIndex].bodySprite;
+            turretSprite.sprite = Global.Sprites[colourIndex].turretSprite;
         }
 
         private void SetupStates()
@@ -191,10 +206,10 @@ namespace Players
 
                 if (angle > halfAngle) continue;
 
-                // Line of sight
-                RaycastHit2D isBlocked = Physics2D.Raycast(origin, dir.normalized, dir.magnitude, obstacleLayers);
+                // Line of sight NOTE: Removed this because tanks should see through barriers
+                // RaycastHit2D isBlocked = Physics2D.Raycast(origin, dir.normalized, dir.magnitude, obstacleLayers);
 
-                if (isBlocked) continue;
+                // if (isBlocked) continue;
 
                 results.Add(obj);
             }

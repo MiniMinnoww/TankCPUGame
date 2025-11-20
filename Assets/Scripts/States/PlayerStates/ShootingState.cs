@@ -20,6 +20,7 @@ namespace States.PlayerStates
         protected override void AfterStartLag()
         {
             Projectile projectile = Object.Instantiate(projectilePrefab, Owner.transform.position, Quaternion.identity);
+            projectile.SetupColour(Owner.ColourIndex);
             projectile.Fire(Owner.transform.up, 5, playerHurtbox);
         
             ScreenShake.ShakeScreen(ScreenShake.smallShake);

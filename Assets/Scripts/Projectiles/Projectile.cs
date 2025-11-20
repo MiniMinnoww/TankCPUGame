@@ -24,6 +24,8 @@ namespace Projectiles
             return this;
         }
 
+        public abstract void SetupColour(int colourIndex);
+
         public abstract void OnFire(Vector2 direction);
 
         protected abstract bool TryHitTarget(Hurtbox hurtbox);
@@ -48,6 +50,10 @@ namespace Projectiles
         
         public ObjectType GetObjectType() => ObjectType.Projectile;
         public Vector2 GetPosition() => transform.position;
-        public IDetectableTank GetOwner() => Owner.GetComponent<Player>();
+
+        public IDetectableTank GetOwner()
+        {
+            return Owner ? Owner.GetComponent<Player>() : null;
+        }
     }
 }

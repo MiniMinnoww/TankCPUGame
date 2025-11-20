@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607c4cf7e42f3e246bf0f891a494de31, type: 3}
   m_Name: Basic Tank Health
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 50

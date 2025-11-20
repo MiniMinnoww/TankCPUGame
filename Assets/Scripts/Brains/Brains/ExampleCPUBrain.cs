@@ -10,6 +10,14 @@ namespace Brains.Brains
         // ReSharper disable Unity.PerformanceAnalysis
         public ExampleCPUBrain() {}
         public ExampleCPUBrain(IPlayerBrainInterface player) : base(player) {}
+
+        private float randomSeed;
+        public override void Start()
+        {
+            // Get a random seed for this CPU
+            randomSeed = Random.Range(0, 360);
+        }
+
         public override void Update()
         {
             // If the closest projectile isn't ours
@@ -32,7 +40,10 @@ namespace Brains.Brains
             }
             else
             {
-                SetRotationInput(Mathf.Sin(Time.time));
+                SetRotationInput(Mathf.Sin(Time.time + randomSeed));
+
+                if (Time.frameCount % 240 == 0) // Every 240 frames (~4s)
+                    randomSeed = Random.Range(0, 360);
                 
                 // Just move around
                 if (IsObstacleAhead(range: 5))

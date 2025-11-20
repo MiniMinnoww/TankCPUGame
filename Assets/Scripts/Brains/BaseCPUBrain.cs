@@ -258,7 +258,7 @@ namespace Brains
         /// <summary>
         /// Gets the rotation value needed to look at said object. This is either -1, 1 or 0 and can be passed directly into SetRotationInput()
         /// </summary>
-        protected float GetRotationToLookAt(IDetectableObject obj, float deadZone = 5f)
+        protected float GetRotationToLookAt(IDetectableObject obj, float deadZone = 1f)
         {
             if (obj == null)
                 return 0;

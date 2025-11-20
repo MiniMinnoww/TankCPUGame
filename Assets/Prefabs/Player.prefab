@@ -177,9 +177,9 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   m_fontSize: 0.2
-  m_fontSizeBase: 36
+  m_fontSizeBase: 0.2
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -10615,7 +10615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2259730166147149863, guid: 910119b15f4fc5349a3b19723f047817, type: 3}
-  sprite: {fileID: 1296905533670828869}
+  bodySprite: {fileID: 1296905533670828869}
+  turretSprite: {fileID: 1798197531168957386}
   rb: {fileID: 4533941572765394420}
   movementStats: {fileID: 11400000, guid: 866aab224cef55243b12fa083d0072bf, type: 2}
   healthStats: {fileID: 11400000, guid: bba5e6cd05b7b7d43ad82ba8b1ed75b7, type: 2}

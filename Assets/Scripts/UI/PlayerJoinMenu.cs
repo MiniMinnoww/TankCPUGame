@@ -69,13 +69,14 @@ namespace UI
 
     public struct PlayerSetupInfo
     {
-        public string playerName;
+        public readonly string playerName;
         public readonly Brain brain;
-        // TODO: Add things like colour, name, etc.
+        public int colourIndex;
     
-        public PlayerSetupInfo(string playerName, Brain brain)
+        public PlayerSetupInfo(string playerName, int colourIndex, Brain brain)
         {
             this.playerName = playerName;
+            this.colourIndex = colourIndex;
             this.brain = brain;
         }
     }

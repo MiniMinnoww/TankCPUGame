@@ -34,6 +34,8 @@ namespace Managers
                 Player newPlayer = Instantiate(playerPrefab, spawnPositions[i % spawnPositions.Length].position, spawnPositions[i % spawnPositions.Length].rotation);
                 Brain playerBrain = (Brain)Activator.CreateInstance(playersToSetup[i].brain.GetType(), (IPlayerBrainInterface) newPlayer);
                 newPlayer.PlayerName = playersToSetup[i].playerName;
+
+                newPlayer.SetupSprites(playersToSetup[i].colourIndex);
                 
                 if (newPlayer.SetBrain(playerBrain))
                 {

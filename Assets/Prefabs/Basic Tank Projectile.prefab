@@ -5059,8 +5059,10 @@ MonoBehaviour:
   rb: {fileID: 6606224086871576701}
   data: {fileID: 11400000, guid: 32f795d98d27bdc45ae25ce649444b30, type: 2}
   deathParticles: {fileID: 5791458446189848465}
-  sprite: {fileID: 8159756781556900624}
+  spriteParent: {fileID: 8159756781556900624}
+  projectileRenderer: {fileID: 5115622294068856282}
   explosionLight: {fileID: 6604173256835325975}
+  trail: {fileID: 1710797140591564429}
 --- !u!50 &6606224086871576701
 Rigidbody2D:
   serializedVersion: 5
