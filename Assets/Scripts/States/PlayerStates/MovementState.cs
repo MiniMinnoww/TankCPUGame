@@ -9,7 +9,9 @@ namespace States.PlayerStates
     {
         private readonly TankMovementStats movementStats;
         private readonly PlayerHurtbox playerHurtbox;
-        private float rotationVelocity = 0;
+        private float rotationVelocity;
+        private Vector2 movementVelocity;
+        private const float DECELERATION_RATE = 5f;
 
         public MovementState(Player owner, Brain brain, PlayerHurtbox hurtbox, TankMovementStats stats) : base(owner, brain)
         {
@@ -32,7 +34,11 @@ namespace States.PlayerStates
         protected override void OnFixedUpdate()
         {
             // Move
-            Owner.Rb.linearVelocity = Brain.DriveInput * movementStats.moveSpeed * Owner.transform.up;
+            if (Mathf.Abs(Brain.DriveInput) > 0.1f)
+                movementVelocity = Brain.DriveInput * movementStats.moveSpeed * Owner.transform.up;
+
+            Owner.Rb.linearVelocity = movementVelocity;
+            
 
             // Turn
             float extraRotation = Mathf.Abs(Brain.DriveInput) * movementStats.extraRotationWhenMoving;
@@ -40,10 +46,13 @@ namespace States.PlayerStates
 
             if (deltaRotation != 0)
                 rotationVelocity = deltaRotation;
-            else
-                rotationVelocity *= 0.9f * Time.fixedDeltaTime;
 
             Owner.Rb.MoveRotation(Owner.Rb.rotation - rotationVelocity);
+            
+            // Lerp the velocities
+            movementVelocity = Vector2.Lerp(movementVelocity, Vector2.zero, DECELERATION_RATE * Time.fixedDeltaTime);
+            rotationVelocity = Mathf.Lerp(rotationVelocity, 0, DECELERATION_RATE * Time.fixedDeltaTime);
+
         }
 
         private void OnShoot()

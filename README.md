@@ -78,7 +78,6 @@ You have access to methods from the `Brain` class, most notably being able to ov
 If you have issues make sure to check out the `ExampleCPUBrain` class.
 
 ## Current Roadmap
-- Smooth movement
 - Make UI stay upright and above the player
 - Polish the game
   - Add recoil to shooting
