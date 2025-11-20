@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Brains;
 using Hurtboxes;
 using NUnit.Framework.Constraints;
+using Players;
 using UnityEngine;
 
 namespace Projectiles
@@ -47,5 +48,6 @@ namespace Projectiles
         
         public ObjectType GetObjectType() => ObjectType.Projectile;
         public Vector2 GetPosition() => transform.position;
+        public IDetectableTank GetOwner() => Owner.GetComponent<Player>();
     }
 }

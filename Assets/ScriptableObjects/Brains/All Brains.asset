@@ -16,15 +16,15 @@ MonoBehaviour:
   - brainName: Player
     brain:
       rid: 1223452093734191199
-  - brainName: Dumb CPU
+  - brainName: Example CPU
     brain:
-      rid: 1223452093734191200
+      rid: 1223452279314055248
   references:
     version: 2
     RefIds:
     - rid: 1223452093734191199
       type: {class: InputBrain, ns: Brains.Brains, asm: Assembly-CSharp}
       data: 
-    - rid: 1223452093734191200
-      type: {class: DumbassBrain, ns: Brains.Brains, asm: Assembly-CSharp}
+    - rid: 1223452279314055248
+      type: {class: ExampleCPUBrain, ns: Brains.Brains, asm: Assembly-CSharp}
       data: 

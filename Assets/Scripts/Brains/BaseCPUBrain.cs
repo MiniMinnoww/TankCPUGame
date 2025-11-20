@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Hurtboxes;
 
 namespace Brains
 {
@@ -11,7 +12,7 @@ namespace Brains
     {
         private Coroutine moveCoroutine;
         private Coroutine rotateCoroutine;
-        
+
         #region Constructors
         
         protected BaseCPUBrain() {}
@@ -22,17 +23,17 @@ namespace Brains
         #region Detecting Objects
 
         /// <summary>
-        /// Returns a list of all detectable objects currently within the brain's field of view.
+        /// Returns a list of all detectable objects currently within the tank's field of view.
         /// </summary>
         protected List<IDetectableObject> GetObjectsInViewCone() => player.GetObjectsInViewCone();
 
         /// <summary>
-        /// Returns a list of tanks currently visible within the brain's field of view.
+        /// Returns a list of tanks currently visible within the tank's field of view.
         /// </summary>
         protected List<IDetectableTank> GetTanksInViewCone() => GetObjectsInViewCone().OfType<IDetectableTank>().ToList();
 
         /// <summary>
-        /// Returns a list of projectiles currently visible within the brain's field of view.
+        /// Returns a list of projectiles currently visible within the tank's field of view.
         /// </summary>
         protected List<IDetectableProjectile> GetProjectilesInViewCone() => GetObjectsInViewCone().OfType<IDetectableProjectile>().ToList();
 
@@ -51,19 +52,42 @@ namespace Brains
         /// </summary>
         private T GetClosestOfType<T>(ObjectType type) where T : IDetectableObject
         {
-            List<IDetectableObject> objects = GetObjectsInViewCone().Where(obj => obj.GetObjectType() == type).ToList();
+            List<IDetectableObject> objects = GetObjectsInViewCone().Where(obj => obj.GetObjectType() == type).Where(obj => obj != player.GetTankReference()).ToList();
             return objects.Count == 0 ? default : objects.OrderBy(GetDistanceTo).OfType<T>().First();
+        }
+        
+        /// <summary>
+        /// Detects if an enemy projectile is in our view cone
+        /// </summary>
+        /// <returns>Whether the enemy projectile is there or not</returns>
+        protected bool IsEnemyProjectileInView()
+        {
+            return GetClosestProjectile() != null && !IsProjectileOwnedByPlayer(GetClosestProjectile());
+        }
+        
+        /// <summary>
+        /// Returns true if there is a tank that would be hit if a bullet was shot this frame
+        /// </summary>
+        /// <param name="range">The range to search in</param>
+        /// <returns>True if there is a shootable tank</returns>
+        protected bool IsTankShootableAhead(float range = 10)
+        {
+            Vector2 origin = player.GetPosition();
+            Vector2 forward = player.GetForward();
+            RaycastHit2D hit = Physics2D.Raycast(origin + forward, forward, range, LayerMask.GetMask("Hurtbox"));
+
+            return hit.collider && hit.collider.TryGetComponent(out PlayerHurtbox _);
         }
         #endregion
 
         #region Direction Utilities
         /// <summary>
-        /// Returns a normalized direction vector from this brain's position to the target world position.
+        /// Returns a normalized direction vector from this tank's position to the target world position.
         /// </summary>
         protected Vector2 GetDirectionTo(Vector2 targetPosition) => (targetPosition - player.GetPosition()).normalized;
 
         /// <summary>
-        /// Returns a normalized direction vector from this brain's position to the specified detectable object.
+        /// Returns a normalized direction vector from this tank's position to the specified detectable object.
         /// </summary>
         protected Vector2 GetDirectionTo(IDetectableObject target)  => target == null ? Vector2.zero : GetDirectionTo(target.GetPosition());
 
@@ -149,7 +173,7 @@ namespace Brains
         }
 
         /// <summary>
-        /// Returns true if any tank is currently visible.
+        /// Returns true if any tank is currently visible in the view cone
         /// </summary>
         protected bool IsTankVisible()
         {
@@ -158,7 +182,7 @@ namespace Brains
         }
 
         /// <summary>
-        /// Returns true if any projectile is currently visible.
+        /// Returns true if any projectile is currently visible in the view cone.
         /// </summary>
         protected bool IsProjectileVisible()
         {
@@ -189,7 +213,7 @@ namespace Brains
         {
             Vector2 origin = player.GetPosition();
             Vector2 forward = player.GetForward();
-            RaycastHit2D hit = Physics2D.Raycast(origin, forward, range, LayerMask.GetMask("Obstacles"));
+            RaycastHit2D hit = Physics2D.Raycast(origin, forward, range, LayerMask.GetMask("Obstacle"));
 
             return hit.collider == null ? null : hit.collider.GetComponent<IDetectableObstacle>();
         }
@@ -206,7 +230,6 @@ namespace Brains
 
         /// <summary>
         /// Sets the rotation input for the tank (left/right).
-        /// Positive values rotate TODO: Which way, negative values rotate ??. Values must be between -1 and 1 
         /// </summary>
         protected void SetRotationInput(float value)
         {
@@ -233,9 +256,9 @@ namespace Brains
         }
 
         /// <summary>
-        /// Gets the rotation value needed to look at said object
+        /// Gets the rotation value needed to look at said object. This is either -1, 1 or 0 and can be passed directly into SetRotationInput()
         /// </summary>
-        protected float GetRotationToLookAt(IDetectableObject obj)
+        protected float GetRotationToLookAt(IDetectableObject obj, float deadZone = 5f)
         {
             if (obj == null)
                 return 0;
@@ -244,9 +267,15 @@ namespace Brains
             Vector2 forward = player.GetForward();
             Vector2 toTarget = (obj.GetPosition() - selfPos).normalized;
 
-            float angle = Vector2.SignedAngle(forward, toTarget);
-            return Mathf.Clamp(angle / 180f, -1f, 1f); // normalized input range (-1 to 1)
+            float angle = -Vector2.SignedAngle(forward, toTarget);
+            float absAngle = Mathf.Abs(angle);
+
+            if (absAngle < deadZone)
+                return 0;
+
+            return Mathf.Clamp(angle / 180f * 1000, -1f, 1f);
         }
+
 
         /// <summary>
         /// Moves forward at the given speed for the specified duration (in seconds).
@@ -267,6 +296,12 @@ namespace Brains
             StopRotationCoroutine();
             rotateCoroutine = StartCoroutine(RotateForSecondsRoutine(speed, seconds));
         }
+        
+        /// <summary>
+        /// Get the current player rotation
+        /// </summary>
+        /// <returns>The current player rotation</returns>
+        protected float GetRotation() => player.GetRotation();
 
         /// <summary>
         /// Coroutine that drives forward for a fixed duration, then stops.
@@ -332,7 +367,20 @@ namespace Brains
         }
     #endregion
 
-
+    #region Utilities
+        protected bool IsProjectileOwnedByPlayer(IDetectableProjectile projectile)
+        {
+            if (projectile != null)
+                return projectile.GetOwner() == (IDetectableTank) player;
+            return false;
+        }
+        
+        /// <summary>
+        /// Gets the health of our player
+        /// </summary>
+        /// <returns>0 - 1 health of our player</returns>
+        protected float GetHealth() => player.GetTankReference().GetHealth();
+    #endregion
     }
 
     public interface IDetectableObject
@@ -350,12 +398,16 @@ namespace Brains
 
     public interface IDetectableTank : IDetectableObject
     {
-        
+        /// <summary>
+        /// Gets the health of the player from 0 (no health) to 1 (max health)
+        /// </summary>
+        /// <returns>0 - 1 health of the player</returns>
+        public float GetHealth();
     }
     
     public interface IDetectableProjectile : IDetectableObject
     {
-        
+        public IDetectableTank GetOwner();
     }
     
     public interface IDetectableObstacle : IDetectableObject

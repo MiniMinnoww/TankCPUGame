@@ -68,8 +68,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.00085002184, y: 0.7499, z: 0}
-    m_Extent: {x: 1.19975, y: 1.2508999, z: 0}
+    m_Center: {x: -0.0010499954, y: 2.4999, z: 0}
+    m_Extent: {x: 2.44265, y: 3.0009, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -82,8 +82,8 @@ MonoBehaviour:
   m_ShapePath:
   - {x: -0.1, y: 0, z: 0}
   - {x: 0.1, y: 0, z: 0}
-  - {x: 0.7, y: 1.5, z: 0}
-  - {x: -0.7, y: 1.5, z: 0}
+  - {x: 1.9430139, y: 5, z: 0}
+  - {x: -1.9430141, y: 5, z: 0}
 --- !u!1 &860186753804844640
 GameObject:
   m_ObjectHideFlags: 0
@@ -5162,7 +5162,7 @@ GameObject:
   - component: {fileID: 449010519015505179}
   - component: {fileID: 444584638781465866}
   - component: {fileID: 1277527793983218428}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10167,7 +10167,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4275872941312166602}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10575,7 +10575,7 @@ GameObject:
   - component: {fileID: 5522953842550592534}
   - component: {fileID: 4533941572765394420}
   - component: {fileID: 5370180260533887196}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10624,6 +10624,14 @@ MonoBehaviour:
   playerNameText: {fileID: 302260017835289389}
   deathParticles: {fileID: 4307319195347562667}
   deathLight: {fileID: 6493130406363298129}
+  viewRange: 5.75
+  viewAngle: 44.3
+  detectionLayers:
+    serializedVersion: 2
+    m_Bits: 200
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 64
   shootingLag:
     startLag: 0.1
     endLag: 0.4

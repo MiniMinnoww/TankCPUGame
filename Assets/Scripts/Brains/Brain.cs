@@ -25,7 +25,7 @@ namespace Brains
 
         private float rotationInput;
 
-        public float RotationInput
+        public  float RotationInput
         {
             get => rotationInput;
             protected set => rotationInput = Mathf.Clamp(value, -1, 1);
@@ -45,6 +45,8 @@ namespace Brains
         public void HaltCoroutine(Coroutine c);
         public Vector2 GetPosition();
         public Vector2 GetForward();
+        public float GetRotation();
         public List<IDetectableObject> GetObjectsInViewCone();
+        public IDetectableTank GetTankReference();
     }
 }

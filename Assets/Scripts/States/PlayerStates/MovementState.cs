@@ -9,6 +9,7 @@ namespace States.PlayerStates
     {
         private readonly TankMovementStats movementStats;
         private readonly PlayerHurtbox playerHurtbox;
+        private float rotationVelocity = 0;
 
         public MovementState(Player owner, Brain brain, PlayerHurtbox hurtbox, TankMovementStats stats) : base(owner, brain)
         {
@@ -28,7 +29,7 @@ namespace States.PlayerStates
             playerHurtbox.OnHurtboxHitAndDamagedEvent -= OnHit;
         }
 
-        protected override void OnUpdate()
+        protected override void OnFixedUpdate()
         {
             // Move
             Owner.Rb.linearVelocity = Brain.DriveInput * movementStats.moveSpeed * Owner.transform.up;
@@ -37,7 +38,12 @@ namespace States.PlayerStates
             float extraRotation = Mathf.Abs(Brain.DriveInput) * movementStats.extraRotationWhenMoving;
             float deltaRotation = (movementStats.rotationSpeed + extraRotation) * Brain.RotationInput * Time.fixedDeltaTime;
 
-            Owner.Rb.MoveRotation(Owner.Rb.rotation - deltaRotation);
+            if (deltaRotation != 0)
+                rotationVelocity = deltaRotation;
+            else
+                rotationVelocity *= 0.9f * Time.fixedDeltaTime;
+
+            Owner.Rb.MoveRotation(Owner.Rb.rotation - rotationVelocity);
         }
 
         private void OnShoot()

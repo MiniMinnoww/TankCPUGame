@@ -15,16 +15,16 @@ namespace Healths
         private float health;
         private float maxHealth;
 
-        protected float CurrentHealth
+        public float CurrentHealth
         {
             get => health;
             private set => health = Mathf.Clamp(value, 0, MaxHealth);
         }
 
-        protected float MaxHealth
+        public float MaxHealth
         {
             get => maxHealth;
-            set => maxHealth = Mathf.Clamp(value, 0, Mathf.Infinity);
+            private set => maxHealth = Mathf.Clamp(value, 0, Mathf.Infinity);
         }
 
         public event OnHit OnHitEvent;

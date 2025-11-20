@@ -33,6 +33,11 @@ namespace Players
         [SerializeField] private ParticleSystem deathParticles;
         [SerializeField] private Light2D deathLight;
 
+        [SerializeField] private float viewRange = 8;
+        [SerializeField] private float viewAngle = 80;
+        [SerializeField] private LayerMask detectionLayers;
+        [SerializeField] private LayerMask obstacleLayers;
+
         [Header("Lag Data")]
         [SerializeField] private Lag shootingLag;
 
@@ -56,6 +61,10 @@ namespace Players
         public event OnPlayerKilled OnPlayerKilledEvent;
 
         private readonly Dictionary<string, BaseState> states = new();
+        
+        // Caching the view cone for the current frame
+        private List<IDetectableObject> cachedViewCone;
+        private int cachedFrame;
 
 
         private void Start() => Setup();
@@ -142,11 +151,104 @@ namespace Players
         public void HaltCoroutine(Coroutine c) => StopCoroutine(c);
         public ObjectType GetObjectType() => ObjectType.Player;
         public Vector2 GetPosition() => transform.position;
+        public float GetHealth()
+        {
+            return health.CurrentHealth / health.MaxHealth;
+        }
+
         public Vector2 GetForward() => transform.up;
+        public float GetRotation() => rb.rotation;
+
         public List<IDetectableObject> GetObjectsInViewCone()
         {
-            return null;
+            List<IDetectableObject> results = new List<IDetectableObject>();
+
+            if (Time.frameCount == cachedFrame && cachedViewCone != null)
+            {
+                // We already cached our results this frame, so return those instead
+                return new List<IDetectableObject>(cachedViewCone);
+            }
+            
+            // Get hits
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, viewRange, detectionLayers);
+
+            Vector2 origin = transform.position; 
+            Vector2 forward = transform.up;
+            float halfAngle = viewAngle * 0.5f;
+
+            foreach (Collider2D hitCollider in hits)
+            {
+                IDetectableObject obj = hitCollider.GetComponent<IDetectableObject>();
+                
+                // Don't detect ourselves
+                if (obj == null) continue;
+                if (ReferenceEquals(obj, this)) continue;
+                
+                // Calculations
+                Vector2 pos = obj.GetPosition();
+                Vector2 dir = pos - origin;
+                float angle = Vector2.Angle(forward, dir);
+
+                if (angle > halfAngle) continue;
+
+                // Line of sight
+                RaycastHit2D isBlocked = Physics2D.Raycast(origin, dir.normalized, dir.magnitude, obstacleLayers);
+
+                if (isBlocked) continue;
+
+                results.Add(obj);
+            }
+            
+            // As the results weren't cached, then cache them now
+            cachedViewCone = results;
+            cachedFrame = Time.frameCount;
+
+            return results;
         }
+
+        public IDetectableTank GetTankReference() => this;
+
+        #endregion
+
+        #region Debug
+
+        private void OnDrawGizmosSelected()
+        {
+            Vector2 origin = transform.position;
+            Vector2 forward = transform.up;
+
+            float halfAngle = viewAngle * 0.5f;
+
+            Vector2 leftDir = Rotate(forward, -halfAngle);
+            Vector2 rightDir = Rotate(forward, halfAngle);
+
+            Gizmos.color = Color.yellow;
+
+            Gizmos.DrawWireSphere(origin, viewRange);
+            Gizmos.DrawLine(origin, origin + leftDir * viewRange);
+            Gizmos.DrawLine(origin, origin + rightDir * viewRange);
+
+            int steps = 20;
+            for (int i = 0; i < steps; i++)
+            {
+                float a0 = Mathf.Lerp(-halfAngle, halfAngle, i / (float)steps);
+                float a1 = Mathf.Lerp(-halfAngle, halfAngle, (i + 1) / (float)steps);
+
+                Vector2 d0 = Rotate(forward, a0);
+                Vector2 d1 = Rotate(forward, a1);
+
+                Gizmos.DrawLine(origin + d0 * viewRange, origin + d1 * viewRange);
+            }
+        }
+
+        private static Vector2 Rotate(Vector2 v, float degrees)
+        {
+            float rad = degrees * Mathf.Deg2Rad;
+            float s = Mathf.Sin(rad);
+            float c = Mathf.Cos(rad);
+            return new Vector2(c * v.x - s * v.y, s * v.x + c * v.y);
+        }
+
         #endregion
     }
 
