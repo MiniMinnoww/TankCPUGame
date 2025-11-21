@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brains:
   - brainName: Example CPU
+    brainColourIndex: 0
     brain:
       rid: 1223452279314055248
   - brainName: Player
+    brainColourIndex: 1
     brain:
       rid: 1223452093734191199
   references:

@@ -18,12 +18,6 @@ namespace UI
         private int oldValue = 0;
         
         public int Colour { get; private set; }
-        private void Start()
-        {
-            // Set colour
-            Colour = Random.Range(0, Global.Sprites.Count); // Random colour index
-            colourImage.sprite = Global.Sprites[Colour].uiImage;
-        }
 
         public void SetupDropdown(string[] values)
         {
@@ -46,6 +40,8 @@ namespace UI
                 nameInput.text = classDropdown.captionText.text;
                 oldValue = newValue;
             }
+
+            Colour = PlayerJoinMenu.Brains.brains.First(b => b.brainName == classDropdown.options[newValue].text).brainColourIndex;
         }
         public PlayerSetupInfo GetData()
         {

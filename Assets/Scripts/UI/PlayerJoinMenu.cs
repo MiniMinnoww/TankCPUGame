@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Brains;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,8 +14,11 @@ namespace UI
         [SerializeField] private Transform playerJoinedUIParent;
 
         public static GameData NextGameData { get; private set; }
+        public static BrainList Brains => Instance.possibleBrains;
 
         private readonly List<PlayerJoinedUI> uis = new();
+
+        private const int MAX_PLAYERS = 7;
 
         private void Awake() => Instance = this;
 
@@ -32,6 +36,8 @@ namespace UI
 
         public void AddNewUI()
         {
+            if (uis.Count >= MAX_PLAYERS) return;
+            
             PlayerJoinedUI newUI = Instantiate(playerJoinedUIPrefab, playerJoinedUIParent);
             newUI.SetupDropdown(possibleBrains.GetBrainNames());
             uis.Add(newUI);
@@ -46,8 +52,7 @@ namespace UI
 
         private GameData GenerateGameData()
         {
-            List<PlayerSetupInfo> infos = new();
-            foreach (PlayerJoinedUI ui in uis) infos.Add(ui.GetData());
+            List<PlayerSetupInfo> infos = uis.Select(ui => ui.GetData()).ToList();
             return new GameData(infos);
         }
     

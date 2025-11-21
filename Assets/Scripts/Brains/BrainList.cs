@@ -34,6 +34,7 @@ namespace Brains
     public struct BrainPair
     {
         public string brainName;
+        public int brainColourIndex;
         [SerializeReference, SubclassSelector] public Brain brain;
     }
 }

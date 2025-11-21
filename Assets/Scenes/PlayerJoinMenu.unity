@@ -571,6 +571,21 @@ MonoBehaviour:
     bodySprite: {fileID: 8559822138837765912, guid: 9858a66a9fa25124bbbf32475b924abe, type: 3}
     turretSprite: {fileID: -963158681696803390, guid: 926da8378abae774bb3b2b2653aa4e4e, type: 3}
     bulletSprite: {fileID: 3874715041448182758, guid: 4c6555ad95718eb4ab4a6c5808f186d4, type: 3}
+  - colour: {r: 1, g: 0.9151792, b: 0, a: 1}
+    uiImage: {fileID: -8420670720628680731, guid: c100897c8954a0a42a0ad7fab2936225, type: 3}
+    bodySprite: {fileID: -6823056731633099451, guid: 442ed7f523588454296b674b8c26d136, type: 3}
+    turretSprite: {fileID: 8953473669013183865, guid: 7904501582dfb534ea5bc4bf06f53e55, type: 3}
+    bulletSprite: {fileID: 432086486845641653, guid: 5002a076e3a3dd748865dacc75e27fad, type: 3}
+  - colour: {r: 0.69891363, g: 0.2216981, b: 1, a: 1}
+    uiImage: {fileID: -8420670720628680731, guid: c100897c8954a0a42a0ad7fab2936225, type: 3}
+    bodySprite: {fileID: 7477375703276695911, guid: 003e17605a5ec4e448741cb553678413, type: 3}
+    turretSprite: {fileID: 4982079876833423076, guid: b300a1db3647ea348b4df9f7a7117fe0, type: 3}
+    bulletSprite: {fileID: -1074500110152152521, guid: 82eb48cc32ee44f4ba02dad41589e130, type: 3}
+  - colour: {r: 0, g: 1, b: 0.9712162, a: 1}
+    uiImage: {fileID: -8420670720628680731, guid: c100897c8954a0a42a0ad7fab2936225, type: 3}
+    bodySprite: {fileID: 6451668337160471089, guid: 9a7d836d9a1c74646a8328a5fbd04a3b, type: 3}
+    turretSprite: {fileID: -4298716469561428521, guid: 217a1183ccc20dd43ac58acb30e76680, type: 3}
+    bulletSprite: {fileID: 6059588731042733529, guid: 9b9a43779fe6d354d948de0bccd8fb4d, type: 3}
 --- !u!1 &1222698113
 GameObject:
   m_ObjectHideFlags: 0
