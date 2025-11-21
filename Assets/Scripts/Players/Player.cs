@@ -36,6 +36,8 @@ namespace Players
         [SerializeField] private ParticleSystem deathParticles;
         [SerializeField] private Light2D deathLight;
 
+        [SerializeField] private ParticleSystem tireParticlePrefab;
+
         [SerializeField] private float viewRange = 8;
         [SerializeField] private float viewAngle = 80;
         [SerializeField] private LayerMask detectionLayers;
@@ -98,7 +100,7 @@ namespace Players
 
         private void SetupStates()
         {
-            states.Add("movement", new MovementState(this, brain, hurtbox, movementStats));
+            states.Add("movement", new MovementState(this, brain, hurtbox, movementStats, tireParticlePrefab));
             states.Add("shooting", new ShootingState(this, brain, hurtbox, projectilePrefab, shootingLag.startLag, shootingLag.endLag));
             states.Add("hitstun", new HitstunState(this, brain, 0.2f));
 

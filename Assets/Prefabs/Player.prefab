@@ -10625,6 +10625,7 @@ MonoBehaviour:
   playerNameText: {fileID: 302260017835289389}
   deathParticles: {fileID: 4307319195347562667}
   deathLight: {fileID: 6493130406363298129}
+  tireParticlePrefab: {fileID: 2762197857242729469, guid: b6caf4e6106b0974b96836b26fd68cc5, type: 3}
   viewRange: 5.75
   viewAngle: 44.3
   detectionLayers:
