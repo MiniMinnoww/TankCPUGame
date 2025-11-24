@@ -408,6 +408,7 @@ namespace Brains
     public interface IDetectableProjectile : IDetectableObject
     {
         public IDetectableTank GetOwner();
+        public Vector2 GetDirection();
     }
     
     public interface IDetectableObstacle : IDetectableObject

@@ -8,6 +8,8 @@ namespace Brains.Brains
     public class ExampleCPUBrain : BaseCPUBrain
     {
         // ReSharper disable Unity.PerformanceAnalysis
+        // ReSharper disable Unity.PerformanceCriticalCodeInvocation
+        // ReSharper disable Unity.PerformanceCriticalCodeInvocation
         public ExampleCPUBrain() {}
         public ExampleCPUBrain(IPlayerBrainInterface player) : base(player) {}
 

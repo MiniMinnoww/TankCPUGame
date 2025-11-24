@@ -61,6 +61,8 @@ namespace Projectiles.Projectiles
             }
             Destroy(gameObject);
         }
+
+        public override Vector2 GetDirection() => Rb.linearVelocity.normalized;
     }
 }
 

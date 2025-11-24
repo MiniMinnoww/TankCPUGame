@@ -13,7 +13,18 @@
         // This function runs every frame
         public override void Update()
         {
+            // TODO: Rewrite this code with your own implementation
             
+            // If there is a tank in our view, rotate towards it
+            // If the tank is shootable, then shoot
+            IDetectableTank closestTank = GetClosestTank();
+            if (closestTank != null)
+            {
+                float targetRotation = GetRotationToLookAt(closestTank);
+                SetRotationInput(targetRotation);
+                
+                if (IsTankShootableAhead()) Shoot();
+            }
         }
     }
 }

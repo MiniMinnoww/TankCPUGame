@@ -55,5 +55,7 @@ namespace Projectiles
         {
             return Owner ? Owner.GetComponent<Player>() : null;
         }
+
+        public abstract Vector2 GetDirection();
     }
 }
