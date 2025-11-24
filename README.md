@@ -44,10 +44,10 @@ Functionality for your CPU is stored in the base class `CPUBrain` that this inhe
 `Vector2 GetDirectionToNearestProjectile()`<br>
 
 #### <ins>Distance Utilities</ins>
-`Vector2 GetDistanceTo(Vector2 targetPosition)`<br>
-`Vector2 GetDistanceTo(IDetectableObject target)`<br>
-`Vector2 GetDistanceToNearestTank()`<br>
-`Vector2 GetDistanceToNearestProjectile()`<br>
+`float GetDistanceTo(Vector2 targetPosition)`<br>
+`float GetDistanceTo(IDetectableObject target)`<br>
+`float GetDistanceToNearestTank()`<br>
+`float GetDistanceToNearestProjectile()`<br>
 
 #### <ins>Detection</ins>
 
